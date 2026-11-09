@@ -4,89 +4,138 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<title>Quilt layout sketch (rough concept)</title>
+<title>Quilt Sketch (rough concept)</title>
 <style>
-  :root { --ink:#222; --muted:#6b6b73; --line:#d9d9de; --bg:#f4f3f7; --accent:#74387a; --card:#fff; }
-  * { box-sizing: border-box; }
-  html, body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.4 -apple-system, system-ui, "Segoe UI", Roboto, sans-serif; -webkit-text-size-adjust:100%; }
-  header { display:flex; align-items:center; gap:10px; padding:10px 14px; background:var(--card); border-bottom:1px solid var(--line); flex-wrap:wrap; }
-  header h1 { font-size:17px; margin:0; font-weight:650; }
-  .badge { font-size:11px; font-weight:700; letter-spacing:.04em; color:#b45f06; background:#fde9cf; border-radius:999px; padding:3px 9px; }
-  .spacer { flex:1; }
-  button, select, input[type=text] { font:inherit; }
-  button { min-height:44px; min-width:44px; padding:0 14px; border:1px solid var(--line); background:var(--card); border-radius:10px; color:var(--ink); cursor:pointer; touch-action:manipulation; }
-  button:disabled { opacity:.4; cursor:default; }
-  button.on { background:var(--accent); border-color:var(--accent); color:#fff; }
-  button.primary { background:var(--accent); border-color:var(--accent); color:#fff; }
-  main { display:flex; gap:14px; padding:14px; max-width:1200px; margin:0 auto; }
-  aside { width:250px; flex:none; background:var(--card); border:1px solid var(--line); border-radius:14px; padding:12px; align-self:flex-start; }
-  aside h2, .tools h2 { font-size:13px; margin:0 0 8px; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); }
-  #swatches { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; }
-  .sw { padding:0; min-height:0; border:2px solid transparent; border-radius:10px; background:none; text-align:center; }
-  .sw svg { display:block; width:100%; height:56px; border-radius:8px; border:1px solid var(--line); }
-  .sw span { display:block; font-size:12px; margin-top:3px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-  .sw.on { border-color:var(--accent); background:var(--card); color:var(--ink); }
-  .note { font-size:12px; color:var(--muted); margin:8px 0 0; }
+  :root { --paper:#f6f1e7; --card:#fffdf8; --ink:#2a2622; --muted:#7a7268; --line:#ddd4c4; --thread:#2f3e6b; --thread-ink:#fff; --warn:#a4421d; }
+  * { box-sizing:border-box; }
+  html, body { margin:0; background:var(--paper); color:var(--ink); font:16px/1.45 -apple-system, system-ui, "Segoe UI", Roboto, sans-serif; -webkit-text-size-adjust:100%; }
+  h1, h2, h3, .serif { font-family: ui-serif, "New York", Georgia, "Times New Roman", serif; font-weight:600; }
+  button, input, select { font:inherit; color:inherit; }
+  button { min-height:44px; min-width:44px; padding:0 14px; border:1px solid var(--line); background:var(--card); border-radius:6px; cursor:pointer; touch-action:manipulation; }
+  button:hover:not(:disabled) { border-color:#b9ad97; }
+  button:disabled { opacity:.38; cursor:default; }
+  button.on, button.primary { background:var(--thread); border-color:var(--thread); color:var(--thread-ink); }
+  button.link { border:0; background:none; color:var(--thread); text-decoration:underline; min-height:32px; padding:0 4px; }
+  button:focus-visible, input:focus-visible { outline:3px solid #8fa3d8; outline-offset:1px; }
+
+  header { display:flex; align-items:center; gap:8px 12px; padding:10px 16px; background:var(--card); border-bottom:1px solid var(--line); flex-wrap:wrap; }
+  .brand { display:flex; align-items:baseline; gap:8px; }
+  .brand h1 { margin:0; font-size:21px; letter-spacing:.01em; }
+  .tag { font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--warn); border:1px solid #d9a58f; border-radius:4px; padding:1px 6px; }
+  #qname { flex:1 1 160px; min-width:120px; max-width:300px; min-height:40px; padding:0 10px; border:1px solid transparent; border-bottom:1px dashed var(--line); background:transparent; border-radius:0; font-size:17px; }
+  #qname:focus { border-color:var(--line); background:#fff; }
+  nav { display:flex; gap:6px; flex-wrap:wrap; margin-left:auto; }
+
+  main { display:flex; gap:16px; padding:16px; max-width:1240px; margin:0 auto; }
+  aside { width:262px; flex:none; align-self:flex-start; background:var(--card); border:1px solid var(--line); border-radius:8px; padding:14px; }
+  h2 { font-size:15px; margin:0 0 8px; }
+  .small { font-size:13px; color:var(--muted); }
+  #swatches { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+  .sw { padding:3px; min-height:0; border:2px solid transparent; background:none; border-radius:6px; text-align:center; }
+  .sw svg { display:block; width:100%; height:42px; border:1px solid var(--line); border-radius:4px; }
+  .sw span { display:block; font-size:11px; line-height:1.2; margin-top:3px; height:26px; overflow:hidden; }
+  .sw.on { border-color:var(--thread); background:var(--card); color:var(--ink); }
+  .fabbox { margin-top:12px; padding-top:10px; border-top:1px solid var(--line); display:flex; flex-direction:column; gap:8px; }
+  .fabbox input[type=text] { min-height:40px; border:1px solid var(--line); border-radius:6px; padding:0 8px; width:100%; background:#fff; }
+  .row { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+  .row output { min-width:48px; text-align:center; }
+  #scaleRow { flex-wrap:nowrap; } #scaleRow button { min-width:40px; padding:0 10px; }
   .work { flex:1; min-width:0; display:flex; flex-direction:column; gap:12px; }
-  .tools { display:flex; flex-direction:column; gap:8px; }
-  .seg { display:inline-flex; border:1px solid var(--line); border-radius:10px; overflow:hidden; background:var(--card); align-self:flex-start; max-width:100%; }
+  .seg { display:inline-flex; border:1px solid var(--line); border-radius:6px; overflow:hidden; background:var(--card); max-width:100%; }
   .seg button { border:0; border-radius:0; border-right:1px solid var(--line); }
   .seg button:last-child { border-right:0; }
-  .canvas-wrap { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:14px; display:flex; justify-content:center; }
-  #quilt { width:100%; max-width:560px; height:auto; max-height:68vh; touch-action:none; user-select:none; -webkit-user-select:none; -webkit-touch-callout:none; box-shadow:0 3px 12px rgba(0,0,0,.2); }
-  .controls { display:flex; flex-wrap:wrap; gap:8px 22px; align-items:center; }
-  .step { display:inline-flex; align-items:center; gap:8px; }
-  .step output { min-width:150px; }
+  .toolrow { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+  .canvas-wrap { background:var(--card); border:1px solid var(--line); border-radius:8px; padding:16px; display:flex; justify-content:center; }
+  #quilt { width:100%; max-width:560px; height:auto; max-height:66vh; touch-action:none; user-select:none; -webkit-user-select:none; -webkit-touch-callout:none; box-shadow:0 2px 10px rgba(40,30,10,.25); }
+  .panel { background:var(--card); border:1px solid var(--line); border-radius:8px; padding:12px 14px; display:flex; flex-direction:column; gap:10px; }
+  .controls { display:flex; flex-wrap:wrap; gap:8px 24px; align-items:center; }
+  .step { display:inline-flex; align-items:center; gap:6px; }
+  .step output { min-width:96px; text-align:center; }
+  .brow { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+  .brow .chip { width:34px; height:34px; border:1px solid var(--line); border-radius:4px; padding:0; min-height:0; min-width:0; overflow:hidden; }
+  .brow .chip svg { width:100%; height:100%; display:block; }
   .foot { font-size:13px; color:var(--muted); display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; }
-  dialog { border:0; border-radius:16px; padding:0; max-width:min(560px, 94vw); width:100%; box-shadow:0 10px 40px rgba(0,0,0,.35); }
-  dialog::backdrop { background:rgba(0,0,0,.4); }
-  .dlg { padding:18px; }
-  .dlg h2 { margin:0 0 10px; font-size:18px; }
-  .dlg ul { margin:6px 0 12px 18px; padding:0; }
-  .dlg .row { display:flex; gap:10px; justify-content:flex-end; margin-top:12px; align-items:center; }
+  .need { font-size:14px; }
+
+  dialog { border:0; border-radius:10px; padding:0; width:min(680px, 95vw); max-height:92vh; box-shadow:0 12px 44px rgba(20,15,5,.4); background:var(--card); color:var(--ink); }
+  dialog::backdrop { background:rgba(30,25,15,.45); }
+  .dlg { padding:18px 20px; }
+  .dlg h2 { font-size:20px; margin:0 0 10px; }
+  .dlg .actions { display:flex; gap:10px; justify-content:flex-end; margin-top:14px; flex-wrap:wrap; }
+  .dlg ul { margin:6px 0 10px 18px; padding:0; }
+  .qlist { display:flex; flex-direction:column; gap:8px; margin:8px 0; }
+  .qitem { display:flex; gap:12px; align-items:center; border:1px solid var(--line); border-radius:8px; padding:8px; }
+  .qitem.cur { border-color:var(--thread); }
+  .qitem svg { width:64px; height:80px; flex:none; background:#fff; border:1px solid var(--line); }
+  .qitem .meta { flex:1; min-width:0; }
+  .qitem .meta b { display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .share { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:10px 0; }
+  .share button { min-height:64px; text-align:left; padding:8px 12px; }
+  .share button small { display:block; color:var(--muted); }
   #cropBox { width:256px; height:256px; margin:6px auto; border:1px solid var(--line); touch-action:none; cursor:grab; display:block; }
   .field { display:flex; gap:8px; align-items:center; margin:8px 0; }
-  .field input[type=text] { flex:1; min-height:40px; border:1px solid var(--line); border-radius:8px; padding:0 10px; }
+  .field input[type=text] { flex:1; min-height:40px; border:1px solid var(--line); border-radius:6px; padding:0 10px; }
   .field input[type=range] { flex:1; }
+
+  table.need { width:100%; border-collapse:collapse; font-size:14px; }
+  table.need th, table.need td { text-align:left; vertical-align:top; padding:6px 6px; border-bottom:1px solid var(--line); }
+  table.need th { font-size:12px; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); }
+  table.need td.num { text-align:right; white-space:nowrap; }
+  table.need .nm { display:flex; gap:6px; align-items:center; }
+  table.need svg.sw16 { width:22px; height:22px; border:1px solid #bbb; border-radius:3px; flex:none; }
+  .caveat { font-size:13px; color:var(--warn); margin:8px 0 0; }
+
   #sheet { display:none; }
-  @media (max-width: 700px) { main { flex-direction:column; } aside { width:auto; align-self:stretch; } #swatches { grid-template-columns:repeat(4,1fr); } }
+  @media (max-width:760px) { main { flex-direction:column; } aside { width:auto; align-self:stretch; } #swatches { grid-template-columns:repeat(4,1fr); } .share { grid-template-columns:1fr; } }
   @media print {
-    @page { size: letter; margin: 0.5in; }
+    @page { size:letter; margin:0.5in; }
     html, body { background:#fff; }
-    body > *:not(#sheet):not(#defsHost) { display:none !important; } /* the pattern definitions must stay renderable */
+    body > *:not(#sheet) { display:none !important; }
     #sheet { display:block !important; color:#000; font-family:-apple-system, Helvetica, Arial, sans-serif; }
-    #sheet h1 { font-size:24px; margin:0 0 4px; }
+    #sheet h1 { font-size:24px; margin:0 0 2px; }
     #sheet p { margin:4px 0; font-size:12px; color:#444; }
-    #sheet svg.print-quilt { width:100%; max-height:6.6in; height:auto; display:block; margin:12px 0; }
-    #sheet .legend { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-top:8px; }
-    #sheet .legend div { display:flex; gap:6px; align-items:center; font-size:11px; }
-    #sheet .legend svg { width:24px; height:24px; border:1px solid #bbb; border-radius:4px; flex:none; }
+    #sheet svg.print-quilt { width:auto; max-width:100%; max-height:5.2in; height:auto; display:block; margin:10px auto; }
+    #sheet table.need { font-size:11px; }
+    #sheet table.need th, #sheet table.need td { padding:3px 4px; }
+    #sheet .caveat { color:#444; font-size:10.5px; }
+    #sheet h2 { font-size:14px; margin:10px 0 4px; }
   }
 </style>
 </head>
 <body>
-<svg id="defsHost" width="0" height="0" style="position:absolute" aria-hidden="true"><defs id="defs"></defs></svg>
-
 <header>
-  <h1>Quilt layout sketch</h1><span class="badge">ROUGH CONCEPT</span>
-  <span class="spacer"></span>
-  <button id="undo" aria-label="Undo">Undo</button>
-  <button id="redo" aria-label="Redo">Redo</button>
-  <button id="print" class="primary">Save as PDF</button>
-  <button id="about">What is this?</button>
+  <div class="brand"><h1>Quilt Sketch</h1><span class="tag">rough concept</span></div>
+  <input id="qname" type="text" maxlength="40" aria-label="Quilt name" placeholder="Name this quilt">
+  <nav>
+    <button id="undo" aria-label="Undo">Undo</button>
+    <button id="redo" aria-label="Redo">Redo</button>
+    <button id="quilts">My quilts</button>
+    <button id="numbers">Fabric &amp; cutting</button>
+    <button id="share" class="primary">Save &amp; share</button>
+    <button id="about">Help</button>
+  </nav>
 </header>
 
 <main>
   <aside>
     <h2>Fabrics</h2>
     <div id="swatches"></div>
-    <p style="margin:10px 0 0"><button id="addPhoto" style="width:100%">Add a photo of your fabric</button></p>
-    <input id="file" type="file" accept="image/*" hidden>
-    <p class="note">Photos stay on this device. Nothing is uploaded.</p>
+    <div class="fabbox" id="fabbox">
+      <input id="fabName" type="text" maxlength="24" aria-label="Fabric name">
+      <div class="row" id="scaleRow"><span class="small">Print repeat</span><button id="scMinus" aria-label="Smaller print">−</button><output id="scOut"></output><button id="scPlus" aria-label="Larger print">+</button></div>
+      <button id="rmFab" class="link" hidden>Remove this fabric</button>
+    </div>
+    <div class="fabbox">
+      <button id="addPhoto">Add a photo of your fabric</button>
+      <button id="addColor">Add a solid colour</button>
+      <input id="file" type="file" accept="image/*" hidden>
+      <input id="colorIn" type="color" value="#8a9a5b" hidden>
+      <p class="small" style="margin:0">Photos stay on this device. Nothing is uploaded.</p>
+    </div>
   </aside>
 
   <section class="work">
-    <div class="tools">
+    <div class="toolrow">
       <div class="seg" id="tools" role="group" aria-label="Tool">
         <button data-tool="paint" class="on">Paint</button>
         <button data-tool="turn">Turn</button>
@@ -97,192 +146,296 @@
         <button data-target="a">Half 1</button>
         <button data-target="b">Half 2</button>
       </div>
-      <div class="note" id="hint"></div>
     </div>
+    <div class="small" id="hint"></div>
 
     <div class="canvas-wrap"><svg id="quilt" role="img" aria-label="Quilt layout"></svg></div>
 
-    <div class="controls">
-      <span class="step"><button id="colsMinus" aria-label="Fewer columns">−</button><output id="colsOut"></output><button id="colsPlus" aria-label="More columns">+</button></span>
-      <span class="step"><button id="rowsMinus" aria-label="Fewer rows">−</button><output id="rowsOut"></output><button id="rowsPlus" aria-label="More rows">+</button></span>
-      <span class="step"><button id="inMinus" aria-label="Smaller blocks">−</button><output id="inOut"></output><button id="inPlus" aria-label="Larger blocks">+</button></span>
-      <button id="reset">Start over</button>
+    <div class="panel">
+      <div class="controls">
+        <span class="step"><button id="colsMinus" aria-label="Fewer columns">−</button><output id="colsOut"></output><button id="colsPlus" aria-label="More columns">+</button></span>
+        <span class="step"><button id="rowsMinus" aria-label="Fewer rows">−</button><output id="rowsOut"></output><button id="rowsPlus" aria-label="More rows">+</button></span>
+        <span class="step"><button id="inMinus" aria-label="Smaller blocks">−</button><output id="inOut"></output><button id="inPlus" aria-label="Larger blocks">+</button></span>
+      </div>
+      <div id="borders"></div>
     </div>
     <div class="foot"><span id="size"></span><span id="status"></span></div>
   </section>
 </main>
 
+<dialog id="quiltsDlg"><div class="dlg">
+  <h2>My quilts</h2>
+  <div class="qlist" id="qlist"></div>
+  <div class="actions"><button id="newBlank">New blank quilt</button><button id="newPinwheel">New from the pinwheel sample</button><button id="quiltsClose" class="primary">Done</button></div>
+</div></dialog>
+
+<dialog id="shareDlg"><div class="dlg">
+  <h2>Save &amp; share</h2>
+  <div class="share">
+    <button id="doPrint"><b>Print or Save as PDF</b><small>A page with the picture, fabric and cutting numbers</small></button>
+    <button id="doPng"><b>Save a picture (PNG)</b><small>Just the quilt, to text or post</small></button>
+    <button id="doFile"><b>Save a copy of this quilt</b><small>A small file you can keep or send</small></button>
+    <button id="doOpen"><b>Open a saved quilt</b><small>Adds it to My quilts</small></button>
+  </div>
+  <input id="openFile" type="file" accept=".json,application/json" hidden>
+  <p class="small">On an iPad, the print button opens Safari's print sheet: use Share, then Save to Files, to keep a PDF.</p>
+  <div class="actions"><button id="shareClose" class="primary">Close</button></div>
+</div></dialog>
+
+<dialog id="numbersDlg"><div class="dlg">
+  <h2>Fabric &amp; cutting</h2>
+  <div class="row" style="margin-bottom:8px">
+    <label for="usable" class="small">Usable fabric width</label>
+    <select id="usable"><option value="40">40 in (42–44 in fabric)</option><option value="42">42 in</option><option value="36">36 in (narrow)</option></select>
+    <label class="small"><input type="checkbox" id="extra" checked> add 10% for mistakes</label>
+  </div>
+  <div id="numbersBody" style="overflow:auto;max-height:62vh"></div>
+  <div class="actions"><button id="numbersPrint">Print this</button><button id="numbersClose" class="primary">Close</button></div>
+</div></dialog>
+
 <dialog id="aboutDlg"><div class="dlg">
-  <h2>What is this?</h2>
+  <h2>About this sketch</h2>
   <p>A rough concept for a simple quilt layout planner, shown to ask quilters whether something like it would be worth building. <strong>Nothing is for sale</strong> and there is no account.</p>
   <p><strong>It does:</strong></p>
   <ul>
-    <li>A grid of square and half-square-triangle blocks you can paint, turn and switch</li>
-    <li>Your own fabric photos, cropped to a square</li>
-    <li>Undo and redo, automatic saving on this device, and a printable page (Save as PDF)</li>
+    <li>Square and half-square-triangle blocks you paint, turn and switch, with undo and redo</li>
+    <li>Your own fabric photos (cropped to a square, with a print size) and solid colours</li>
+    <li>Borders you can colour, several quilts you can duplicate to compare colourways</li>
+    <li>Cutting and yardage estimates for the top, borders, binding and backing</li>
+    <li>Saving to this device, a printable page, a picture, and a file copy</li>
   </ul>
-  <p><strong>It does not (yet):</strong></p>
-  <ul>
-    <li>Give yardage or cutting numbers: the picture is approximate</li>
-    <li>Borders, sashing, curves, appliqué or paper piecing</li>
-    <li>Open other programs' files, or sync between devices</li>
-  </ul>
-  <p>There is no AI in it. The sample fabrics are simple patterns drawn in code. Your layout and photos are saved only in this browser on this device; nothing is sent anywhere and nothing is tracked.</p>
-  <div class="row"><button id="aboutClose" class="primary">Close</button></div>
+  <p><strong>It does not (yet):</strong> sashing, curves, appliqué, paper piecing, block libraries, other programs' files, or syncing between devices.</p>
+  <p><strong>The numbers are estimates.</strong> They assume ¼″ seams, plain strips and a usable fabric width you choose. Check them against your pattern before you cut.</p>
+  <p>There is no AI in it. The sample fabrics are simple patterns drawn in code. Your quilts and photos are saved only in this browser on this device; nothing is sent anywhere and nothing is tracked.</p>
+  <p id="maker" class="small"></p>
+  <div class="actions"><button id="aboutClose" class="primary">Close</button></div>
 </div></dialog>
 
 <dialog id="cropDlg"><div class="dlg">
   <h2>Crop your fabric</h2>
   <canvas id="cropBox" width="256" height="256"></canvas>
   <div class="field"><label for="zoom">Zoom</label><input id="zoom" type="range" min="1" max="4" step="0.05" value="1"></div>
-  <div class="field"><label for="fabName">Name</label><input id="fabName" type="text" maxlength="24"></div>
-  <p class="note">Drag the picture to choose the square that becomes one patch of fabric.</p>
-  <div class="row"><button id="cropCancel">Cancel</button><button id="cropOk" class="primary">Use this fabric</button></div>
+  <div class="field"><label for="cropName">Name</label><input id="cropName" type="text" maxlength="24"></div>
+  <p class="small">Drag the picture to choose the square that becomes one repeat of the fabric. You can set how big the print is afterwards.</p>
+  <div class="actions"><button id="cropCancel">Cancel</button><button id="cropOk" class="primary">Use this fabric</button></div>
 </div></dialog>
 
 <section id="sheet" aria-hidden="true"></section>
 
+<script src="quilt-logic.js"></script>
 <script>
 (() => {
 'use strict';
-const KEY = 'quilt-layout-sketch-v1';
+const L = window.QuiltLogic;
+const MAKER = { name: '', contact: '' };   // shown in Help when filled in
+const KEY = 'quilt-sketch-v2';
 const $ = (id) => document.getElementById(id);
-const LIM = { cols:[2,16], rows:[2,16], inches:[3,12] };
+const LIM = { cols:[2,16], rows:[2,16], inches:[3,12], border:[0.5,8], borders:3, scale:[1,12] };
+const clone = (o) => JSON.parse(JSON.stringify(o));
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[c]));
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
 
 // ---------- sample fabrics: simple patterns drawn in code ----------
 const SAMPLE = [
-  { name:'Cream solid',   c:[245,238,214], p:'solid' },
-  { name:'Navy solid',    c:[31,51,102],   p:'solid' },
-  { name:'Rose dots',     c:[219,115,133], p:'dots' },
-  { name:'Sage stripe',   c:[140,173,140], p:'stripes' },
-  { name:'Mustard plaid', c:[227,176,51],  p:'plaid' },
-  { name:'Teal diamonds', c:[38,133,140],  p:'diamonds' },
-  { name:'Plum solid',    c:[115,56,115],  p:'solid' },
-  { name:'Blush dots',    c:[247,199,194], p:'dots' },
+  { name:'Cream solid',   c:[245,238,214], p:'solid',    scale:4 },
+  { name:'Navy solid',    c:[31,51,102],   p:'solid',    scale:4 },
+  { name:'Rose dots',     c:[219,115,133], p:'dots',     scale:4 },
+  { name:'Sage stripe',   c:[140,173,140], p:'stripes',  scale:4 },
+  { name:'Mustard plaid', c:[227,176,51],  p:'plaid',    scale:4 },
+  { name:'Teal diamonds', c:[38,133,140],  p:'diamonds', scale:4 },
+  { name:'Plum solid',    c:[115,56,115],  p:'solid',    scale:4 },
+  { name:'Blush dots',    c:[247,199,194], p:'dots',     scale:4 },
 ];
+const NSAMPLE = SAMPLE.length;
 
-// A pinwheel layout: each 2x2 group of half-square triangles spins around its centre.
-function starter() {
-  const rows = 8, cols = 6, blocks = [];
-  const spin = [[3, 0], [2, 1]];
+function pinwheel() {
+  const rows = 8, cols = 6, blocks = [], spin = [[3, 0], [2, 1]];
   for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) {
     const alt = (Math.floor(r / 2) + Math.floor(c / 2)) % 2;
     blocks.push({ k:'t', a: alt ? 2 : 1, b: 0, r: spin[r % 2][c % 2] });
   }
-  return { rows, cols, inches: 8, blocks, fabrics: SAMPLE.map((f) => ({ ...f })) };
+  return { id: uid(), name: 'Pinwheel sample', rows, cols, inches: 8, blocks, borders: [] };
 }
-const clone = (o) => JSON.parse(JSON.stringify(o));
-function load() {
+function blank() {
+  const rows = 8, cols = 6;
+  return { id: uid(), name: 'New quilt', rows, cols, inches: 8, borders: [], blocks: Array.from({ length: rows * cols }, () => ({ k:'s', a:0, b:1, r:0 })) };
+}
+
+// ---------- storage ----------
+function valid(q, nf) {
+  const int = (v, lo, hi) => Number.isInteger(v) && v >= lo && v <= hi;
+  return q && int(q.rows, LIM.rows[0], LIM.rows[1]) && int(q.cols, LIM.cols[0], LIM.cols[1]) && int(q.inches, LIM.inches[0], LIM.inches[1])
+    && Array.isArray(q.blocks) && q.blocks.length === q.rows * q.cols
+    && q.blocks.every((b) => b && (b.k === 's' || b.k === 't') && int(b.a, 0, nf - 1) && int(b.b, 0, nf - 1) && int(b.r, 0, 3))
+    && Array.isArray(q.borders) && q.borders.length <= LIM.borders
+    && q.borders.every((b) => b && typeof b.w === 'number' && b.w >= LIM.border[0] && b.w <= LIM.border[1] && (b.w * 2) % 1 === 0 && int(b.f, 0, nf - 1))
+    && typeof q.name === 'string';
+}
+function loadApp() {
   try {
-    const s = JSON.parse(localStorage.getItem(KEY));
-    if (s && s.blocks && s.blocks.length === s.rows * s.cols && s.fabrics && s.fabrics.length) return s;
+    const a = JSON.parse(localStorage.getItem(KEY));
+    if (a && Array.isArray(a.fabrics) && a.fabrics.length >= NSAMPLE && Array.isArray(a.quilts) && a.quilts.length
+        && a.quilts.every((q) => valid(q, a.fabrics.length)) && a.quilts.some((q) => q.id === a.cur)) return a;
   } catch (e) {}
   return null;
 }
-
-let S = load() || starter();
+let APP = loadApp();
+const resumed = !!APP;
+if (!APP) { const q = pinwheel(); APP = { fabrics: SAMPLE.map((f) => ({ ...f })), quilts: [q], cur: q.id, usable: 40, extra: true }; }
+const Q = () => APP.quilts.find((q) => q.id === APP.cur);
 let tool = 'paint', target = 'whole', fabric = 1;
 let undo = [], redo = [];
-const snap = () => ({ rows:S.rows, cols:S.cols, inches:S.inches, blocks:clone(S.blocks) });
-const restore = (x) => { S.rows = x.rows; S.cols = x.cols; S.inches = x.inches; S.blocks = clone(x.blocks); };
+const snap = () => { const q = Q(); return { rows:q.rows, cols:q.cols, inches:q.inches, blocks:clone(q.blocks), borders:clone(q.borders) }; };
+const restore = (x) => { const q = Q(); q.rows = x.rows; q.cols = x.cols; q.inches = x.inches; q.blocks = clone(x.blocks); q.borders = clone(x.borders); };
 const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
 
-// ---------- fabric patterns (SVG <pattern>, one tile per block) ----------
-function patternFor(f, i) {
-  if (f.photo) {
-    return `<pattern id="f${i}" width="1" height="1" viewBox="0 0 100 100" preserveAspectRatio="none"><image href="${f.photo}" width="100" height="100" preserveAspectRatio="none"/></pattern>`;
-  }
-  const [r, g, b] = f.c, lum = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+// ---------- fabrics as SVG ----------
+function art(f) {
+  const [r, g, b] = f.c || [200, 200, 200], lum = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
   const ink = lum > 0.55 ? 'rgba(0,0,0,.28)' : 'rgba(255,255,255,.5)';
-  let art = '';
-  if (f.p === 'dots') for (let y = 0; y < 8; y++) for (let x = 0; x < 6; x++) art += `<circle cx="${x * 18 + (y % 2 ? 9 : 0) + 5}" cy="${y * 13 + 7}" r="2.4" fill="${ink}"/>`;
-  if (f.p === 'stripes') for (let x = 0; x < 100; x += 11) art += `<rect x="${x}" y="0" width="3.2" height="100" fill="${ink}"/>`;
-  if (f.p === 'plaid') { for (let x = 4; x < 100; x += 18) art += `<rect x="${x}" y="0" width="5.5" height="100" fill="${ink}" opacity=".55"/>`; for (let y = 4; y < 100; y += 18) art += `<rect x="0" y="${y}" width="100" height="5.5" fill="${ink}" opacity=".55"/>`; }
-  if (f.p === 'diamonds') for (let y = 0; y <= 100; y += 16) for (let x = 0; x <= 100; x += 16) art += `<path d="M${x} ${y - 5.5}L${x + 5.5} ${y}L${x} ${y + 5.5}L${x - 5.5} ${y}Z" fill="${ink}"/>`;
-  return `<pattern id="f${i}" width="1" height="1" viewBox="0 0 100 100" preserveAspectRatio="none"><rect width="100" height="100" fill="rgb(${r},${g},${b})"/>${art}</pattern>`;
+  let s = '';
+  if (f.p === 'dots') for (let y = 0; y < 8; y++) for (let x = 0; x < 6; x++) s += `<circle cx="${x * 18 + (y % 2 ? 9 : 0) + 5}" cy="${y * 13 + 7}" r="2.4" fill="${ink}"/>`;
+  if (f.p === 'stripes') for (let x = 0; x < 100; x += 11) s += `<rect x="${x}" y="0" width="3.2" height="100" fill="${ink}"/>`;
+  if (f.p === 'plaid') { for (let x = 4; x < 100; x += 18) s += `<rect x="${x}" y="0" width="5.5" height="100" fill="${ink}" opacity=".55"/>`; for (let y = 4; y < 100; y += 18) s += `<rect x="0" y="${y}" width="100" height="5.5" fill="${ink}" opacity=".55"/>`; }
+  if (f.p === 'diamonds') for (let y = 0; y <= 100; y += 16) for (let x = 0; x <= 100; x += 16) s += `<path d="M${x} ${y - 5.5}L${x + 5.5} ${y}L${x} ${y + 5.5}L${x - 5.5} ${y}Z" fill="${ink}"/>`;
+  return s;
 }
-const fill = (i) => `url(#f${Math.min(Math.max(i, 0), S.fabrics.length - 1)})`;
-function renderDefs() { $('defs').innerHTML = S.fabrics.map(patternFor).join(''); }
+const isSolid = (f) => !f.photo && f.p === 'solid';
+const solidFill = (f) => `rgb(${f.c[0]},${f.c[1]},${f.c[2]})`;
+/** <pattern> for fabric i. unitTile: tile size in drawing units (userSpace) or null for one tile per shape (swatches). */
+function patternDef(f, id, unitTile) {
+  const attrs = unitTile ? `patternUnits="userSpaceOnUse" width="${unitTile}" height="${unitTile}"` : 'width="1" height="1"';
+  const body = f.photo ? `<image href="${f.photo}" width="100" height="100" preserveAspectRatio="none"/>` : `<rect width="100" height="100" fill="${solidFill(f)}"/>${art(f)}`;
+  return `<pattern id="${id}" ${attrs} viewBox="0 0 100 100" preserveAspectRatio="none">${body}</pattern>`;
+}
+function swatchSvg(f, i, pre) {
+  const id = `${pre}${i}`;
+  const fillv = isSolid(f) ? solidFill(f) : `url(#${id})`;
+  return `<svg viewBox="0 0 100 70" preserveAspectRatio="none" aria-hidden="true"><defs>${isSolid(f) ? '' : patternDef(f, id, 0)}</defs><rect width="100" height="70" fill="${fillv}"/></svg>`;
+}
 
-// ---------- drawing ----------
-function blockSvg(b, x, y) {
-  let inner;
-  if (b.k === 's') inner = `<rect width="100" height="100" fill="${fill(b.a)}"/>`;
-  else inner = `<g transform="rotate(${b.r * 90} 50 50)"><rect width="100" height="100" fill="${fill(b.a)}"/><polygon points="100,0 100,100 0,100" fill="${fill(b.b)}"/></g>`;
-  return `<g transform="translate(${x} ${y})">${inner}</g>`;
-}
-function quiltInner(q) {
+/** The whole quilt as a self-contained SVG string (own <defs>, ids start with pre). */
+function quiltSvg(q, pre, extra) {
+  const u = (inch) => inch / q.inches * 100;
+  const W = q.cols * 100, H = q.rows * 100;
+  const used = new Set();
+  q.blocks.forEach((b) => { used.add(b.a); if (b.k === 't') used.add(b.b); });
+  q.borders.forEach((b) => used.add(b.f));
+  let defs = '';
+  const fillOf = (i) => { const f = APP.fabrics[i]; return isSolid(f) ? solidFill(f) : `url(#${pre}${i})`; };
+  used.forEach((i) => { const f = APP.fabrics[i]; if (!isSolid(f)) defs += patternDef(f, `${pre}${i}`, u(f.scale || 4)); });
+  let T = 0; const ext = q.borders.map((b) => (T += u(b.w)));
   let out = '';
-  for (let r = 0; r < q.rows; r++) for (let c = 0; c < q.cols; c++) out += blockSvg(q.blocks[r * q.cols + c], c * 100, r * 100);
+  for (let i = q.borders.length - 1; i >= 0; i--) {
+    const e = ext[i];
+    out += `<rect x="${-e}" y="${-e}" width="${W + 2 * e}" height="${H + 2 * e}" fill="${fillOf(q.borders[i].f)}"/>`;
+  }
+  for (let r = 0; r < q.rows; r++) for (let c = 0; c < q.cols; c++) {
+    L.shapes(q.blocks[r * q.cols + c]).forEach((s) => {
+      out += `<polygon points="${s.pts.map((p) => `${p[0] + c * 100},${p[1] + r * 100}`).join(' ')}" fill="${fillOf(s.fab)}"/>`;
+    });
+  }
   let seams = '';
-  for (let c = 0; c <= q.cols; c++) seams += `M${c * 100} 0V${q.rows * 100}`;
-  for (let r = 0; r <= q.rows; r++) seams += `M0 ${r * 100}H${q.cols * 100}`;
-  return out + `<path d="${seams}" stroke="#fff" stroke-opacity=".65" stroke-width="1.4" fill="none"/>`;
+  for (let c = 0; c <= q.cols; c++) seams += `M${c * 100} 0V${H}`;
+  for (let r = 0; r <= q.rows; r++) seams += `M0 ${r * 100}H${W}`;
+  ext.forEach((e) => { seams += `M${-e} ${-e}H${W + e}V${H + e}H${-e}Z`; });
+  out += `<path d="${seams}" stroke="#fff" stroke-opacity=".6" stroke-width="1.2" fill="none"/>`;
+  return `<svg ${extra || ''} xmlns="http://www.w3.org/2000/svg" viewBox="${-T} ${-T} ${W + 2 * T} ${H + 2 * T}"><defs>${defs}</defs>${out}</svg>`;
+}
+
+// ---------- screen rendering ----------
+function setSvg(el, str) { // replace the quilt svg contents but keep the element (and its listeners)
+  const m = str.match(/viewBox="([^"]+)"/); el.setAttribute('viewBox', m[1]);
+  el.innerHTML = str.replace(/^<svg[^>]*>/, '').replace(/<\/svg>$/, '');
 }
 function render() {
-  const svg = $('quilt');
-  svg.setAttribute('viewBox', `0 0 ${S.cols * 100} ${S.rows * 100}`);
-  svg.setAttribute('aria-label', `Quilt layout, ${S.cols} blocks across and ${S.rows} down`);
-  svg.innerHTML = quiltInner(S);
-  $('colsOut').textContent = `${S.cols} across`;
-  $('rowsOut').textContent = `${S.rows} down`;
-  $('inOut').textContent = `${S.inches} in blocks`;
-  $('size').textContent = `Finished top about ${S.cols * S.inches} × ${S.rows * S.inches} in. A picture only: no yardage or cutting numbers.`;
+  const q = Q();
+  setSvg($('quilt'), quiltSvg(q, 'q'));
+  $('quilt').setAttribute('aria-label', `Quilt layout, ${q.cols} blocks across and ${q.rows} down`);
+  if (document.activeElement !== $('qname')) $('qname').value = q.name;
+  $('colsOut').textContent = `${q.cols} across`; $('rowsOut').textContent = `${q.rows} down`; $('inOut').textContent = `${q.inches} in blocks`;
+  const p = L.plan(q, { usable: APP.usable, extra: APP.extra ? 0.10 : 0 });
+  $('size').textContent = `Finished top about ${L.fmtIn(p.top.w)} × ${L.fmtIn(p.top.h)} in${q.borders.length ? ' with borders' : ''}. Estimates only: check before you cut.`;
   $('undo').disabled = !undo.length; $('redo').disabled = !redo.length;
-  $('colsMinus').disabled = S.cols <= LIM.cols[0]; $('colsPlus').disabled = S.cols >= LIM.cols[1];
-  $('rowsMinus').disabled = S.rows <= LIM.rows[0]; $('rowsPlus').disabled = S.rows >= LIM.rows[1];
-  $('inMinus').disabled = S.inches <= LIM.inches[0]; $('inPlus').disabled = S.inches >= LIM.inches[1];
+  $('colsMinus').disabled = q.cols <= LIM.cols[0]; $('colsPlus').disabled = q.cols >= LIM.cols[1];
+  $('rowsMinus').disabled = q.rows <= LIM.rows[0]; $('rowsPlus').disabled = q.rows >= LIM.rows[1];
+  $('inMinus').disabled = q.inches <= LIM.inches[0]; $('inPlus').disabled = q.inches >= LIM.inches[1];
+  renderBorders();
+}
+function renderBorders() {
+  const q = Q();
+  const rows = q.borders.map((b, i) => `<div class="brow" data-i="${i}">
+      <b>Border ${i + 1}</b>
+      <button data-act="bminus" aria-label="Narrower border ${i + 1}" ${b.w <= LIM.border[0] ? 'disabled' : ''}>−</button><output>${L.fmtIn(b.w)} in</output><button data-act="bplus" aria-label="Wider border ${i + 1}" ${b.w >= LIM.border[1] ? 'disabled' : ''}>+</button>
+      <button class="chip" data-act="bfab" aria-label="Use the selected fabric for border ${i + 1}" title="Use the selected fabric">${swatchSvg(APP.fabrics[b.f], b.f, 'b' + i + '_')}</button>
+      <button class="link" data-act="bdel">Remove</button></div>`).join('');
+  $('borders').innerHTML = `<div class="small" style="margin-bottom:4px">Borders (inside to out). Tap a border on the quilt to colour it with the selected fabric.</div>${rows}
+    <button id="addBorder" ${q.borders.length >= LIM.borders ? 'disabled' : ''}>Add a border</button>`;
 }
 function renderSwatches() {
-  $('swatches').innerHTML = S.fabrics.map((f, i) =>
-    `<button class="sw${i === fabric ? ' on' : ''}" data-i="${i}" aria-label="${f.name}" aria-pressed="${i === fabric}"><svg viewBox="0 0 100 70" preserveAspectRatio="none"><rect width="100" height="70" fill="${fill(i)}"/></svg><span>${f.name}</span></button>`).join('');
+  $('swatches').innerHTML = APP.fabrics.map((f, i) =>
+    `<button class="sw${i === fabric ? ' on' : ''}" data-i="${i}" aria-label="${esc(f.name)}" aria-pressed="${i === fabric}">${swatchSvg(f, i, 's')}<span>${esc(f.name)}</span></button>`).join('');
+  const f = APP.fabrics[fabric];
+  if (document.activeElement !== $('fabName')) $('fabName').value = f.name;
+  $('scaleRow').style.display = isSolid(f) ? 'none' : '';
+  $('scOut').textContent = `${f.scale || 4} in`;
+  $('scMinus').disabled = (f.scale || 4) <= LIM.scale[0]; $('scPlus').disabled = (f.scale || 4) >= LIM.scale[1];
+  const usedAnywhere = APP.quilts.some((q) => q.blocks.some((b) => b.a === fabric || b.b === fabric) || q.borders.some((b) => b.f === fabric));
+  $('rmFab').hidden = fabric < NSAMPLE; $('rmFab').disabled = usedAnywhere;
+  $('rmFab').textContent = usedAnywhere ? 'In use: cannot remove' : 'Remove this fabric';
 }
 function renderHint() {
-  $('hint').textContent = tool === 'paint' ? 'Pick a fabric, then tap or drag across blocks. On a triangle block, choose the whole block or one half.'
+  $('hint').textContent = tool === 'paint' ? 'Pick a fabric, then tap or drag across blocks or borders. On a triangle block, choose the whole block or one half.'
     : tool === 'turn' ? 'Tap a block to turn it a quarter turn.' : 'Tap a block to switch it between a square and a triangle.';
-  $('targets').style.visibility = tool === 'paint' ? '' : 'hidden'; // hidden, not removed: the quilt must not jump
+  $('targets').style.visibility = tool === 'paint' ? '' : 'hidden';
 }
-
-let saveTimer;
-function save() {
-  try { localStorage.setItem(KEY, JSON.stringify(S)); $('status').textContent = 'Saved on this device ' + new Date().toLocaleTimeString(); $('status').style.color = ''; }
-  catch (e) { $('status').textContent = 'Could not save on this device (too many large photos?)'; $('status').style.color = '#b00020'; }
+function saveApp() {
+  try { localStorage.setItem(KEY, JSON.stringify(APP)); $('status').textContent = 'Saved on this device ' + new Date().toLocaleTimeString(); $('status').style.color = ''; }
+  catch (e) { $('status').textContent = 'Could not save on this device (storage full: remove some photos)'; $('status').style.color = '#b00020'; }
 }
 function commit(before) {
   if (same(before, snap())) return false;
   undo.push(before); if (undo.length > 100) undo.shift(); redo = [];
-  render(); save(); return true;
+  render(); renderSwatches(); saveApp(); return true;
 }
+function refreshAll() { renderSwatches(); renderHint(); render(); }
 
 // ---------- pointer editing: a drag is one undo step ----------
 let stroke = null;
-function cellAt(ev) {
-  const r = $('quilt').getBoundingClientRect();
-  const c = Math.floor((ev.clientX - r.left) / r.width * S.cols), row = Math.floor((ev.clientY - r.top) / r.height * S.rows);
-  if (c < 0 || row < 0 || c >= S.cols || row >= S.rows) return -1;
-  return row * S.cols + c;
+function userPoint(ev) {
+  const svg = $('quilt'), pt = svg.createSVGPoint(); pt.x = ev.clientX; pt.y = ev.clientY;
+  return pt.matrixTransform(svg.getScreenCTM().inverse());
 }
-function applyTo(i, first) {
-  const b = S.blocks[i]; if (!b) return;
+/** -> {block:i} | {border:i} | null  */
+function hit(ev) {
+  const q = Q(), p = userPoint(ev), W = q.cols * 100, H = q.rows * 100;
+  if (p.x >= 0 && p.y >= 0 && p.x < W && p.y < H) return { block: Math.floor(p.y / 100) * q.cols + Math.floor(p.x / 100) };
+  const d = Math.max(-p.x, p.x - W, -p.y, p.y - H); let acc = 0;
+  for (let i = 0; i < q.borders.length; i++) { acc += q.borders[i].w / q.inches * 100; if (d <= acc) return { border: i }; }
+  return null;
+}
+function applyHit(h, first) {
+  const q = Q();
+  if (h.border != null) { if (tool === 'paint') q.borders[h.border].f = fabric; return; }
+  const b = q.blocks[h.block]; if (!b) return;
   if (tool === 'paint') {
-    if (b.k === 't' && target === 'a') b.a = fabric;
-    else if (b.k === 't' && target === 'b') b.b = fabric;
-    else if (b.k === 't') { b.a = fabric; b.b = fabric; }
-    else b.a = fabric;
+    if (b.k === 't' && target === 'a') b.a = fabric; else if (b.k === 't' && target === 'b') b.b = fabric;
+    else if (b.k === 't') { b.a = fabric; b.b = fabric; } else b.a = fabric;
   } else if (first && tool === 'turn') b.r = (b.r + 1) % 4;
   else if (first && tool === 'shape') b.k = b.k === 's' ? 't' : 's';
 }
+const hkey = (h) => (h.block != null ? 'b' + h.block : 'r' + h.border);
 $('quilt').addEventListener('pointerdown', (ev) => {
   if (ev.button > 0) return;
-  const i = cellAt(ev); if (i < 0) return;
+  const h = hit(ev); if (!h) return;
   ev.preventDefault(); $('quilt').setPointerCapture(ev.pointerId);
-  stroke = { before: snap(), last: i };
-  applyTo(i, true); render();
+  stroke = { before: snap(), last: hkey(h) };
+  applyHit(h, true); render();
 });
 $('quilt').addEventListener('pointermove', (ev) => {
   if (!stroke) return;
-  const i = cellAt(ev); if (i < 0 || i === stroke.last) return;
-  stroke.last = i; applyTo(i, false); render();
+  const h = hit(ev); if (!h || hkey(h) === stroke.last) return;
+  stroke.last = hkey(h); applyHit(h, false); render();
 });
 const endStroke = () => { if (!stroke) return; const b = stroke.before; stroke = null; if (!commit(b)) render(); };
 $('quilt').addEventListener('pointerup', endStroke);
@@ -297,92 +450,182 @@ document.querySelectorAll('#targets button').forEach((b) => b.addEventListener('
 }));
 $('swatches').addEventListener('click', (ev) => {
   const b = ev.target.closest('.sw'); if (!b) return;
-  fabric = +b.dataset.i;
-  document.querySelectorAll('#tools button').forEach((x) => x.classList.toggle('on', x.dataset.tool === 'paint')); tool = 'paint';
+  fabric = +b.dataset.i; tool = 'paint';
+  document.querySelectorAll('#tools button').forEach((x) => x.classList.toggle('on', x.dataset.tool === 'paint'));
   renderSwatches(); renderHint();
 });
-$('undo').addEventListener('click', () => { if (!undo.length) return; redo.push(snap()); restore(undo.pop()); render(); save(); });
-$('redo').addEventListener('click', () => { if (!redo.length) return; undo.push(snap()); restore(redo.pop()); render(); save(); });
+$('fabName').addEventListener('input', () => { APP.fabrics[fabric].name = $('fabName').value.slice(0, 24); saveApp(); const s = document.querySelector(`.sw[data-i="${fabric}"] span`); if (s) s.textContent = APP.fabrics[fabric].name; });
+function setScale(d) { const f = APP.fabrics[fabric]; f.scale = Math.min(Math.max((f.scale || 4) + d, LIM.scale[0]), LIM.scale[1]); saveApp(); renderSwatches(); render(); }
+$('scMinus').onclick = () => setScale(-1); $('scPlus').onclick = () => setScale(1);
+$('undo').onclick = () => { if (!undo.length) return; redo.push(snap()); restore(undo.pop()); render(); saveApp(); };
+$('redo').onclick = () => { if (!redo.length) return; undo.push(snap()); restore(redo.pop()); render(); saveApp(); };
 document.addEventListener('keydown', (ev) => {
-  if (!(ev.metaKey || ev.ctrlKey) || ev.key.toLowerCase() !== 'z') return;
+  if (!(ev.metaKey || ev.ctrlKey) || ev.key.toLowerCase() !== 'z' || ev.target.tagName === 'INPUT') return;
   ev.preventDefault(); $(ev.shiftKey ? 'redo' : 'undo').click();
 });
+$('qname').addEventListener('input', () => { Q().name = $('qname').value.slice(0, 40); saveApp(); });
 
 function resize(rows, cols) {
-  rows = Math.min(Math.max(rows, LIM.rows[0]), LIM.rows[1]); cols = Math.min(Math.max(cols, LIM.cols[0]), LIM.cols[1]);
+  const q = Q(); rows = Math.min(Math.max(rows, LIM.rows[0]), LIM.rows[1]); cols = Math.min(Math.max(cols, LIM.cols[0]), LIM.cols[1]);
   const before = snap(), blocks = [];
-  for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++)
-    blocks.push(r < S.rows && c < S.cols ? S.blocks[r * S.cols + c] : { k:'s', a:0, b:1, r:0 });
-  S.rows = rows; S.cols = cols; S.blocks = blocks; commit(before);
+  for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) blocks.push(r < q.rows && c < q.cols ? q.blocks[r * q.cols + c] : { k:'s', a:0, b:1, r:0 });
+  q.rows = rows; q.cols = cols; q.blocks = blocks; commit(before);
 }
-function setInches(v) { const before = snap(); S.inches = Math.min(Math.max(v, LIM.inches[0]), LIM.inches[1]); commit(before); }
-$('colsMinus').onclick = () => resize(S.rows, S.cols - 1); $('colsPlus').onclick = () => resize(S.rows, S.cols + 1);
-$('rowsMinus').onclick = () => resize(S.rows - 1, S.cols); $('rowsPlus').onclick = () => resize(S.rows + 1, S.cols);
-$('inMinus').onclick = () => setInches(S.inches - 1); $('inPlus').onclick = () => setInches(S.inches + 1);
-$('reset').onclick = () => {
-  if (!confirm('Start over with the sample pinwheel layout? Your photos are kept; undo brings the layout back.')) return;
-  const before = snap(), keep = S.fabrics, fresh = starter();
-  S.rows = fresh.rows; S.cols = fresh.cols; S.inches = fresh.inches; S.blocks = fresh.blocks; S.fabrics = keep; commit(before);
-};
+function setInches(v) { const before = snap(); Q().inches = Math.min(Math.max(v, LIM.inches[0]), LIM.inches[1]); commit(before); }
+$('colsMinus').onclick = () => resize(Q().rows, Q().cols - 1); $('colsPlus').onclick = () => resize(Q().rows, Q().cols + 1);
+$('rowsMinus').onclick = () => resize(Q().rows - 1, Q().cols); $('rowsPlus').onclick = () => resize(Q().rows + 1, Q().cols);
+$('inMinus').onclick = () => setInches(Q().inches - 1); $('inPlus').onclick = () => setInches(Q().inches + 1);
+
+$('borders').addEventListener('click', (ev) => {
+  const q = Q(), btn = ev.target.closest('button'); if (!btn) return;
+  const before = snap();
+  if (btn.id === 'addBorder') { if (q.borders.length < LIM.borders) q.borders.push({ w: 2, f: fabric }); return void commit(before); }
+  const row = btn.closest('.brow'); if (!row) return; const i = +row.dataset.i, act = btn.dataset.act;
+  if (act === 'bminus') q.borders[i].w = Math.max(LIM.border[0], q.borders[i].w - 0.5);
+  if (act === 'bplus') q.borders[i].w = Math.min(LIM.border[1], q.borders[i].w + 0.5);
+  if (act === 'bfab') q.borders[i].f = fabric;
+  if (act === 'bdel') q.borders.splice(i, 1);
+  commit(before);
+});
+
+// ---------- dialogs: help, quilts, save & share, numbers ----------
+$('maker').textContent = MAKER.name ? `Made by ${MAKER.name}, a beginner developer exploring this idea.${MAKER.contact ? ' Feedback: ' + MAKER.contact : ''}` : '';
 $('about').onclick = () => $('aboutDlg').showModal(); $('aboutClose').onclick = () => $('aboutDlg').close();
 
-// ---------- add a fabric photo: pick, crop a square, store a small tile ----------
+function renderQuilts() {
+  $('qlist').innerHTML = APP.quilts.map((q) => `<div class="qitem${q.id === APP.cur ? ' cur' : ''}" data-id="${q.id}">
+      ${quiltSvg(q, 't' + q.id.replace(/\W/g, '') + '_', 'preserveAspectRatio="xMidYMid meet"')}
+      <div class="meta"><b>${esc(q.name || 'Untitled')}</b><span class="small">${q.cols} × ${q.rows} blocks${q.id === APP.cur ? ' · open now' : ''}</span></div>
+      <button data-act="open">Open</button><button data-act="dup">Duplicate</button><button data-act="del" ${APP.quilts.length < 2 ? 'disabled' : ''}>Delete</button></div>`).join('');
+}
+function switchTo(id) { APP.cur = id; undo = []; redo = []; saveApp(); refreshAll(); }
+$('quilts').onclick = () => { renderQuilts(); $('quiltsDlg').showModal(); };
+$('quiltsClose').onclick = () => $('quiltsDlg').close();
+$('newBlank').onclick = () => { const q = blank(); APP.quilts.push(q); switchTo(q.id); renderQuilts(); };
+$('newPinwheel').onclick = () => { const q = pinwheel(); APP.quilts.push(q); switchTo(q.id); renderQuilts(); };
+$('qlist').addEventListener('click', (ev) => {
+  const btn = ev.target.closest('button'); if (!btn) return; const id = btn.closest('.qitem').dataset.id, q = APP.quilts.find((x) => x.id === id);
+  if (btn.dataset.act === 'open') { switchTo(id); $('quiltsDlg').close(); }
+  if (btn.dataset.act === 'dup') { const c = clone(q); c.id = uid(); c.name = (q.name || 'Quilt') + ' copy'; APP.quilts.splice(APP.quilts.indexOf(q) + 1, 0, c); saveApp(); renderQuilts(); }
+  if (btn.dataset.act === 'del') {
+    if (APP.quilts.length < 2 || !confirm(`Delete "${q.name || 'Untitled'}"? This cannot be undone.`)) return;
+    APP.quilts.splice(APP.quilts.indexOf(q), 1); if (APP.cur === id) switchTo(APP.quilts[0].id); else saveApp(); renderQuilts();
+  }
+});
+
+function download(name, blob) { const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 4000); }
+const fileSafe = (s) => (s || 'quilt').replace(/[^\w\- ]+/g, '').trim().replace(/\s+/g, '-').slice(0, 40) || 'quilt';
+$('share').onclick = () => $('shareDlg').showModal(); $('shareClose').onclick = () => $('shareDlg').close();
+$('doPrint').onclick = () => { $('shareDlg').close(); buildSheet(); window.print(); };
+$('doPng').onclick = async () => {
+  const q = Q(), svg = quiltSvg(q, 'x'), vb = svg.match(/viewBox="([^"]+)"/)[1].split(' ').map(Number), px = 1400, h = Math.round(px * vb[3] / vb[2]);
+  try {
+    const im = new Image(); await new Promise((res, rej) => { im.onload = res; im.onerror = rej; im.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg.replace('<svg ', `<svg width="${px}" height="${h}" `)); });
+    const c = document.createElement('canvas'); c.width = px; c.height = h; const x = c.getContext('2d'); x.fillStyle = '#fff'; x.fillRect(0, 0, px, h); x.drawImage(im, 0, 0, px, h);
+    c.toBlob((b) => { if (b) download(fileSafe(q.name) + '.png', b); else alert('Could not make the picture.'); }, 'image/png');
+  } catch (e) { alert('Could not make the picture in this browser. Try Print or Save as PDF instead.'); }
+};
+$('doFile').onclick = () => {
+  const q = Q(), used = new Set(); q.blocks.forEach((b) => { used.add(b.a); used.add(b.b); }); q.borders.forEach((b) => used.add(b.f));
+  const ids = [...used].sort((a, b) => a - b), map = new Map(ids.map((v, i) => [v, i]));
+  const out = clone(q); out.blocks.forEach((b) => { b.a = map.get(b.a); b.b = map.get(b.b); }); out.borders.forEach((b) => { b.f = map.get(b.f); });
+  delete out.id;
+  download(fileSafe(q.name) + '.quilt.json', new Blob([JSON.stringify({ format:'quilt-sketch', version:1, quilt: out, fabrics: ids.map((i) => APP.fabrics[i]) })], { type:'application/json' }));
+};
+$('doOpen').onclick = () => $('openFile').click();
+$('openFile').addEventListener('change', async () => {
+  const f = $('openFile').files[0]; $('openFile').value = ''; if (!f) return;
+  try {
+    if (f.size > 8e6) throw new Error('big');
+    const d = JSON.parse(await f.text());
+    if (d.format !== 'quilt-sketch' || !Array.isArray(d.fabrics) || !d.fabrics.length || d.fabrics.length > 60) throw new Error('format');
+    const fabs = d.fabrics.map((x) => ({ name: String(x.name || 'Fabric').slice(0, 24), scale: Math.min(Math.max(+x.scale || 4, LIM.scale[0]), LIM.scale[1]),
+      ...(typeof x.photo === 'string' && /^data:image\/(jpeg|png);base64,/.test(x.photo) ? { photo: x.photo } : { c: (Array.isArray(x.c) && x.c.length === 3 ? x.c.map((n) => Math.min(255, Math.max(0, n | 0))) : [200, 200, 200]), p: ['solid','dots','stripes','plaid','diamonds'].includes(x.p) ? x.p : 'solid' }) }));
+    const q = { ...d.quilt, id: uid() };
+    if (!valid(q, fabs.length)) throw new Error('quilt');
+    const key = (f) => [f.name, f.scale || 4, f.photo || '', f.p || '', (f.c || []).join(',')].join('|');
+    const merged = APP.fabrics.slice(), map = fabs.map((f) => { let i = merged.findIndex((g) => key(g) === key(f)); if (i < 0) { merged.push(f); i = merged.length - 1; } return i; });
+    q.blocks = q.blocks.map((b) => ({ ...b, a: map[b.a], b: map[b.b] })); q.borders = q.borders.map((b) => ({ ...b, f: map[b.f] }));
+    q.name = String(q.name).slice(0, 40);
+    APP.fabrics = merged; APP.quilts.push(q); switchTo(q.id); $('shareDlg').close();
+  } catch (e) { alert('That file could not be opened. It needs to be a quilt saved from Quilt Sketch.'); }
+});
+
+function numbersHtml(q, forSheet) {
+  const p = L.plan(q, { usable: APP.usable, extra: APP.extra ? 0.10 : 0 }), nm = (i) => esc(APP.fabrics[i].name);
+  const sw = (i) => `<svg class="sw16" viewBox="0 0 100 100">${isSolid(APP.fabrics[i]) ? `<rect width="100" height="100" fill="${solidFill(APP.fabrics[i])}"/>` : `<defs>${patternDef(APP.fabrics[i], (forSheet ? 'ns' : 'nd') + i, 0)}</defs><rect width="100" height="100" fill="url(#${(forSheet ? 'ns' : 'nd') + i})"/>`}</svg>`;
+  const yd = (v) => L.fmtYd(v) + ' yd';
+  const cutLines = (f) => f.cuts.map((c) => {
+    if (c.kind === 'square') return `Cut ${c.count} square${c.count > 1 ? 's' : ''} ${L.fmtIn(c.cut)}″ (${c.strips} strip${c.strips > 1 ? 's' : ''} across the fabric)`;
+    if (c.kind === 'hst') return `Cut ${c.count} square${c.count > 1 ? 's' : ''} ${L.fmtIn(c.cut)}″ for half-square triangles with ${c.mates.map(nm).join(', ')} (${c.blocks} block${c.blocks > 1 ? 's' : ''}, two at a time)`;
+    return `Cut ${c.count} strip${c.count > 1 ? 's' : ''} ${L.fmtIn(c.cut)}″ wide for borders; join end to end and cut to length`;
+  }).join('<br>');
+  const rows = p.fabrics.map((f) => `<tr><td><div class="nm">${sw(f.fab)}<b>${nm(f.fab)}</b></div></td><td>${cutLines(f)}</td><td class="num">${yd(f.yards)}</td><td class="num">${yd(f.buy)}</td></tr>`).join('');
+  return `<table class="need"><thead><tr><th>Fabric</th><th>Cut</th><th class="num">Need</th><th class="num">${APP.extra ? 'Buy (+10%)' : 'Buy'}</th></tr></thead><tbody>${rows}
+    <tr><td><b>Binding</b></td><td>${p.binding.strips} strips ${L.fmtIn(p.binding.cut)}″ wide, joined</td><td class="num">${yd(p.binding.yards)}</td><td class="num">${yd(L.ceilEighth(p.binding.yards * (APP.extra ? 1.1 : 1)))}</td></tr>
+    <tr><td><b>Backing</b></td><td>${p.backing.panels} panel${p.backing.panels > 1 ? 's' : ''} ${L.fmtIn(p.backing.length)}″ long, seams run ${p.backing.runs}; ${L.fmtIn(p.top.w + 8)} × ${L.fmtIn(p.top.h + 8)}″ with 4″ extra all round</td><td class="num">${yd(p.backing.yards)}</td><td class="num">${yd(L.ceilEighth(p.backing.yards * (APP.extra ? 1.1 : 1)))}</td></tr></tbody></table>
+    <p class="caveat">Estimates for a plain top. They assume ¼″ seams, ${p.usable}″ of usable fabric width, squares cut at finished size + ½″, and half-square triangles made two at a time from squares cut at finished size + ⅞″. They ignore fabric direction, print matching and shrinkage. Check against your pattern before you cut.</p>`;
+}
+$('numbers').onclick = () => { $('usable').value = String(APP.usable); $('extra').checked = APP.extra; $('numbersBody').innerHTML = numbersHtml(Q(), false); $('numbersDlg').showModal(); };
+$('usable').onchange = () => { APP.usable = +$('usable').value; saveApp(); $('numbersBody').innerHTML = numbersHtml(Q(), false); render(); };
+$('extra').onchange = () => { APP.extra = $('extra').checked; saveApp(); $('numbersBody').innerHTML = numbersHtml(Q(), false); };
+$('numbersClose').onclick = () => $('numbersDlg').close();
+$('numbersPrint').onclick = () => { $('numbersDlg').close(); buildSheet(); window.print(); };
+
+// ---------- add a fabric: photo (crop a square) or solid colour ----------
 let img = null, zoom = 1, ox = 0, oy = 0, drag = null;
 const cb = $('cropBox'), cx = cb.getContext('2d');
-function baseScale() { return Math.max(256 / img.width, 256 / img.height); }
-function clampPan() {
-  const s = baseScale() * zoom, w = img.width * s, h = img.height * s;
-  ox = Math.min(0, Math.max(256 - w, ox)); oy = Math.min(0, Math.max(256 - h, oy));
-}
-function drawCrop() {
-  cx.fillStyle = '#fff'; cx.fillRect(0, 0, 256, 256);
-  const s = baseScale() * zoom; clampPan(); cx.drawImage(img, ox, oy, img.width * s, img.height * s);
-}
+const baseScale = () => Math.max(256 / img.width, 256 / img.height);
+function clampPan() { const s = baseScale() * zoom; ox = Math.min(0, Math.max(256 - img.width * s, ox)); oy = Math.min(0, Math.max(256 - img.height * s, oy)); }
+function drawCrop() { cx.fillStyle = '#fff'; cx.fillRect(0, 0, 256, 256); const s = baseScale() * zoom; clampPan(); cx.drawImage(img, ox, oy, img.width * s, img.height * s); }
 $('addPhoto').onclick = () => $('file').click();
 $('file').addEventListener('change', async () => {
   const f = $('file').files[0]; $('file').value = ''; if (!f) return;
   try {
     const url = URL.createObjectURL(f), im = new Image();
     await new Promise((res, rej) => { im.onload = res; im.onerror = rej; im.src = url; });
-    img = im; zoom = 1; $('zoom').value = 1;
-    const s = baseScale(); ox = (256 - im.width * s) / 2; oy = (256 - im.height * s) / 2;
-    $('fabName').value = 'My fabric ' + (S.fabrics.filter((x) => x.photo).length + 1);
+    img = im; zoom = 1; $('zoom').value = 1; const s = baseScale(); ox = (256 - im.width * s) / 2; oy = (256 - im.height * s) / 2;
+    $('cropName').value = 'My fabric ' + (APP.fabrics.filter((x) => x.photo).length + 1);
     drawCrop(); $('cropDlg').showModal();
   } catch (e) { alert('That picture could not be opened. Try a JPG or PNG.'); }
 });
-$('zoom').addEventListener('input', () => {
-  const old = baseScale() * zoom; zoom = +$('zoom').value; const s = baseScale() * zoom;
-  const mx = (128 - ox) / old, my = (128 - oy) / old; ox = 128 - mx * s; oy = 128 - my * s; drawCrop();
-});
+$('zoom').addEventListener('input', () => { const old = baseScale() * zoom; zoom = +$('zoom').value; const s = baseScale() * zoom, mx = (128 - ox) / old, my = (128 - oy) / old; ox = 128 - mx * s; oy = 128 - my * s; drawCrop(); });
 cb.addEventListener('pointerdown', (ev) => { cb.setPointerCapture(ev.pointerId); drag = { x: ev.clientX, y: ev.clientY, ox, oy }; });
 cb.addEventListener('pointermove', (ev) => { if (!drag) return; const k = 256 / cb.getBoundingClientRect().width; ox = drag.ox + (ev.clientX - drag.x) * k; oy = drag.oy + (ev.clientY - drag.y) * k; drawCrop(); });
 cb.addEventListener('pointerup', () => { drag = null; });
 $('cropCancel').onclick = () => $('cropDlg').close();
+function addFabric(f) { APP.fabrics.push(f); fabric = APP.fabrics.length - 1; tool = 'paint'; document.querySelectorAll('#tools button').forEach((x) => x.classList.toggle('on', x.dataset.tool === 'paint')); refreshAll(); saveApp(); }
 $('cropOk').onclick = () => {
-  const out = document.createElement('canvas'); out.width = out.height = 256;
-  out.getContext('2d').drawImage(cb, 0, 0);
-  S.fabrics.push({ name: ($('fabName').value || 'My fabric').trim().slice(0, 24), photo: out.toDataURL('image/jpeg', 0.85) });
-  fabric = S.fabrics.length - 1; tool = 'paint';
-  document.querySelectorAll('#tools button').forEach((x) => x.classList.toggle('on', x.dataset.tool === 'paint'));
-  renderDefs(); renderSwatches(); renderHint(); render(); save(); $('cropDlg').close();
+  const out = document.createElement('canvas'); out.width = out.height = 256; out.getContext('2d').drawImage(cb, 0, 0);
+  addFabric({ name: ($('cropName').value || 'My fabric').trim().slice(0, 24), scale: 4, photo: out.toDataURL('image/jpeg', 0.85) }); $('cropDlg').close();
+};
+$('addColor').onclick = () => $('colorIn').click();
+$('colorIn').addEventListener('change', () => {
+  const h = $('colorIn').value, c = [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
+  addFabric({ name: 'Colour ' + (APP.fabrics.filter((x) => !x.photo && x.p === 'solid').length - 2), c, p: 'solid', scale: 4 });
+});
+$('rmFab').onclick = () => {
+  if (fabric < NSAMPLE || $('rmFab').disabled) return;
+  const gone = fabric, fix = (i) => (i > gone ? i - 1 : i);
+  APP.fabrics.splice(gone, 1);
+  APP.quilts.forEach((q) => { q.blocks.forEach((b) => { b.a = fix(b.a); b.b = fix(b.b); }); q.borders.forEach((b) => { b.f = fix(b.f); }); });
+  undo = []; redo = []; fabric = Math.min(fabric, APP.fabrics.length - 1); refreshAll(); saveApp();
 };
 
-// ---------- printable page (Save as PDF from the print dialog / share sheet) ----------
+// ---------- printable page ----------
 function buildSheet() {
-  const used = new Set(); S.blocks.forEach((b) => { used.add(b.a); if (b.k === 't') used.add(b.b); });
-  const legend = S.fabrics.map((f, i) => used.has(i) ? `<div><svg viewBox="0 0 100 100"><rect width="100" height="100" fill="${fill(i)}"/></svg>${f.name.replace(/</g, '&lt;')}</div>` : '').join('');
-  $('sheet').innerHTML = `<h1>Quilt layout</h1><p>A picture of the layout only: not cutting instructions and not a yardage estimate.</p>
-    <svg class="print-quilt" viewBox="0 0 ${S.cols * 100} ${S.rows * 100}">${quiltInner(S)}</svg>
-    <p>${S.cols} × ${S.rows} blocks, ${S.inches} in each: about ${S.cols * S.inches} × ${S.rows * S.inches} in finished.</p>
-    <p><strong>Fabrics used</strong></p><div class="legend">${legend}</div>`;
+  const q = Q();
+  $('sheet').innerHTML = `<h1>${esc(q.name || 'Quilt layout')}</h1><p>A picture of the layout with estimates for planning. Not a pattern.</p>
+    ${quiltSvg(q, 'p', 'class="print-quilt"')}
+    <p>${q.cols} × ${q.rows} blocks, ${q.inches} in each${q.borders.length ? ', ' + q.borders.length + ' border' + (q.borders.length > 1 ? 's' : '') : ''}: about ${L.fmtIn(L.plan(q, { usable: APP.usable }).top.w)} × ${L.fmtIn(L.plan(q, { usable: APP.usable }).top.h)} in finished.</p>
+    <h2>Fabric and cutting</h2>${numbersHtml(q, true)}<p>Made with Quilt Sketch, a rough concept.</p>`;
 }
-$('print').onclick = () => { buildSheet(); window.print(); };
 window.addEventListener('beforeprint', buildSheet);
 
 // ---------- boot ----------
-renderDefs(); renderSwatches(); renderHint(); render();
-$('status').textContent = load() ? 'Opened your saved layout' : 'Saves automatically on this device';
-window.__quilt = { state: () => S, snap }; // read-only handle for automated checks
+refreshAll();
+$('status').textContent = resumed ? 'Opened your saved quilts' : 'Saves automatically on this device';
+window.__quilt = { app: () => APP, cur: () => Q(), plan: () => L.plan(Q(), { usable: APP.usable }) }; // read-only handle for automated checks
 })();
 </script>
 </body>
